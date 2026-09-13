@@ -1,0 +1,5 @@
+const topbar=document.querySelector('.menubar');
+const navigationLinks=[...topbar.querySelectorAll('nav a')];
+function highlightNavigation(section){for(const link of navigationLinks){const active=link.hash==='#'+section;if(active)link.setAttribute('aria-current','location');else link.removeAttribute('aria-current')}}
+function updateNavigation(){topbar.classList.toggle('is-scrolled',scrollY>30);if(location.pathname.startsWith('/events/')){highlightNavigation('events');return}if(location.pathname.startsWith('/memories/')){highlightNavigation('archive');return}const sections=['home','events','about','archive'];let current='home';for(const id of sections){const section=document.getElementById(id);if(section&&section.getBoundingClientRect().top<=innerHeight*.4)current=id}highlightNavigation(current==='home'?'events':current)}
+let navigationFrame;addEventListener('scroll',()=>{if(navigationFrame)return;navigationFrame=requestAnimationFrame(()=>{navigationFrame=null;updateNavigation()})},{passive:true});addEventListener('resize',updateNavigation);updateNavigation();
