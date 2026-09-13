@@ -1,0 +1,17 @@
+.hero-scene.memory-deck{margin:0 8px;perspective:1300px;isolation:isolate}
+.deck-label{font-size:8px;letter-spacing:1.8px;margin:0 0 35px;color:inherit;opacity:.65}
+.deck-stage{height:470px;position:relative;perspective:1200px;animation:deck-float 8s ease-in-out infinite}
+.deck-card{position:absolute;inset:0;width:100%;padding:0;display:flex;flex-direction:column;border:1px solid #ffffff55;border-radius:16px;overflow:hidden;text-align:left;background:#eee9df;color:#372c2c;box-shadow:0 28px 45px #0003;transform-origin:50% 80%;transition:transform 1.15s cubic-bezier(.22,.8,.2,1),opacity .8s;backface-visibility:hidden;cursor:pointer}
+.deck-card[data-position="0"]{z-index:3;transform:rotate(-3deg) rotateY(var(--deck-x,0deg)) rotateX(var(--deck-y,0deg));opacity:1}
+.deck-card[data-position="1"]{z-index:2;transform:translate(8%,-5%) rotate(7deg) scale(.94);opacity:1;pointer-events:none}
+.deck-card[data-position="2"]{z-index:1;transform:translate(1%,-12%) rotate(-12deg) scale(.88);opacity:1;pointer-events:none}
+.deck-chrome,.deck-foot{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;font-size:9px;letter-spacing:1px;flex-shrink:0}.deck-lights{color:#ed695e;letter-spacing:2px}.deck-image{position:relative;display:block;flex:1;min-height:0;background:#170709;overflow:hidden}.deck-image img{width:100%;height:100%;object-fit:cover;display:block}.deck-caption{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:end;padding:27px 22px;background:linear-gradient(transparent 35%,#080405e8)}.deck-caption small{font-size:9px;letter-spacing:1.5px;color:#fff0e7}.deck-caption strong{font:italic 54px/1.1 Georgia,serif;color:#fff5eb;margin-top:15px;font-weight:400}.deck-foot{font-size:8px}.deck-controls{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:40px;font-size:12px}.deck-controls>div{display:flex;align-items:center;gap:12px}.deck-controls button{border:1px solid #a77b7b55;border-radius:50%;background:transparent;color:inherit;width:40px;height:40px;font-size:23px}.deck-controls button:hover{background:#c7192040}.deck-count{font-size:9px;letter-spacing:2px}.deck-open{border-bottom:1px solid #a77b7b55;padding-bottom:8px}
+:root[data-theme=dark] .deck-card{background:#301b23;color:#efdcdd;border-color:#b675754a;box-shadow:0 28px 50px #0007}
+.liquid-defs{position:absolute;width:0;height:0;overflow:hidden}.deck-image .liquid-lens{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;opacity:0;filter:url(#deck-liquid);mask-image:radial-gradient(circle 110px at var(--liquid-x,50%) var(--liquid-y,50%),#000 15%,transparent 100%);transition:opacity .3s}.deck-image .liquid-lens.visible{opacity:1}
+.deck-card:focus-visible,.deck-controls button:focus-visible,.deck-open:focus-visible{outline:2px solid #ed695e;outline-offset:5px}
+
+@keyframes deck-float{50%{transform:translateY(-9px) rotateX(1deg)}}
+.deck-paused .deck-stage,.motion-off .deck-stage{animation-play-state:paused}.motion-off .liquid-lens{display:none}
+@media(max-width:1000px){.deck-stage{height:390px}.deck-caption strong{font-size:42px}}
+@media(max-width:700px){.hero-scene.memory-deck{margin:0 15px}.deck-stage{height:410px}.deck-label{font-size:7px}.deck-controls{margin-top:26px}.deck-caption strong{font-size:44px}.deck-card[data-position="1"]{transform:translate(5%,-4%) rotate(6deg) scale(.95)}.deck-controls>div{gap:7px}}
+@media(prefers-reduced-motion:reduce){.deck-stage{animation:none}.deck-card{transition:none}.liquid-lens{display:none}}

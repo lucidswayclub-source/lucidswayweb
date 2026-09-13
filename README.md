@@ -20,7 +20,7 @@ No payment, authentication, messaging, ticket generation, admin system or real r
 
 ## Gallery update
 
-The supplied logo is served unchanged from `dist/assets/lucids-way-logo.png`. Dedicated static archive pages are available at `/memories/after-hours/`, `/memories/in-the-moment/`, and `/memories/one-more-song/`. Gallery data and interactions are in `dist/memories.js`; visual styling is in `dist/gallery.css`. Collections remain illustrative and include Unsplash moodboard photographs by Nathan Collier, Asher Hansow and Ahmed Samy; replace with the client event assets. Lightbox supports Escape, left/right arrows and focus restoration. Button and gallery motion respect the system reduced-motion preference and the dock toggle.
+The enhanced transparent logo is served from `dist/assets/lucids-way-logo.png` across the header, footer, dock, favicon, event pages, memory pages and intro animation. Dedicated static archive pages are available at `/memories/after-hours/`, `/memories/in-the-moment/`, and `/memories/one-more-song/`. Gallery data and interactions are in `dist/memories.js`; visual styling is in `dist/gallery.css`. Collections remain illustrative and include Unsplash moodboard photographs by Nathan Collier, Asher Hansow and Ahmed Samy; replace with the client event assets. Lightbox supports Escape, left/right arrows and focus restoration. Button and gallery motion respect the system reduced-motion preference and the dock toggle.
 
 ## Hero motion and theme
 

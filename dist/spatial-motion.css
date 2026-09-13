@@ -1,0 +1,8 @@
+.spatial-lines{position:fixed;inset:0;pointer-events:none;width:100%;height:100%;z-index:4}
+.spatial-word{display:inline-block;transform-origin:50% 80%;backface-visibility:hidden}
+.spatial-cursor{position:fixed;top:0;left:0;width:22px;height:22px;margin:-11px;z-index:15000;pointer-events:none;border:1px solid #ed7b83;border-radius:50%;background:#c42b3715;display:grid;place-items:center;font:9px/1 sans-serif;color:#f7959c;opacity:0;transition:width .25s,height .25s,margin .25s,background .25s;will-change:transform}
+.spatial-cursor.is-action{width:46px;height:46px;margin:-23px;background:#c42b3730}
+.spatial-cursor.is-image{width:66px;height:66px;margin:-33px;background:#18090dcc;color:#fff0ed;letter-spacing:.15em}
+@media(hover:hover) and (pointer:fine){.spatial-pointer,.spatial-pointer a,.spatial-pointer button{cursor:none}.spatial-pointer input,.spatial-pointer select{cursor:auto}}
+@media(prefers-reduced-motion:reduce){.spatial-word{transform:none!important}.spatial-lines,.spatial-cursor{display:none!important}.spatial-pointer,.spatial-pointer a,.spatial-pointer button{cursor:auto}}
+.motion-off .spatial-word{transform:none!important}.motion-off .spatial-lines,.motion-off .spatial-cursor{display:none!important}

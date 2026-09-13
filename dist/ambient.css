@@ -1,0 +1,18 @@
+/* Slowly passing light ribbons; composited transforms keep the motion fluid. */
+body{isolation:isolate}
+.ambient-field{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none;contain:strict;background:#000000}
+.ambient-field i{position:absolute;left:-45%;top:10%;width:180%;height:52%;border-radius:50%;background:radial-gradient(ellipse,transparent 34%,#c7192066 43%,#c7192038 49%,transparent 63%);filter:blur(32px);transform:rotate(-24deg);animation:aurora-near 19s ease-in-out infinite alternate;will-change:transform}
+.ambient-field i:nth-child(2){top:38%;left:-25%;height:65%;background:radial-gradient(ellipse,transparent 30%,#c7192070 43%,#ee202b30 50%,transparent 64%);animation:aurora-far 27s ease-in-out infinite alternate;animation-delay:-12s}
+.ambient-field i:nth-child(3){left:-35%;top:-30%;width:160%;height:100%;background:radial-gradient(ellipse,#c7192035,transparent 65%);animation:aurora-haze 23s ease-in-out infinite alternate;animation-delay:-8s}
+.ambient-field::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 35%,transparent 15%,#00000077 100%);pointer-events:none}
+@keyframes aurora-near{from{transform:translate3d(-8%,-14%,0) rotate(-24deg) scaleY(.8)}to{transform:translate3d(12%,28%,0) rotate(-5deg) scaleY(1.35)}}
+@keyframes aurora-far{from{transform:translate3d(10%,8%,0) rotate(18deg) scaleY(1.2)}to{transform:translate3d(-12%,-32%,0) rotate(-14deg) scaleY(.75)}}
+@keyframes aurora-haze{from{transform:translate3d(-12%,0,0)}to{transform:translate3d(18%,32%,0)}}
+:root:not([data-theme=dark]) .ambient-field{background:#e7ece6}
+:root:not([data-theme=dark]) .ambient-field i{opacity:.35}
+:root:not([data-theme=dark]) .ambient-field::after{background:radial-gradient(ellipse,transparent,#e7ece677)}
+.motion-off .ambient-field i,.ambient-field.ambient-paused i{animation-play-state:paused}
+@media(max-width:700px){.ambient-field i{filter:blur(20px)}.ambient-field i:nth-child(3){display:none}}
+@media(prefers-reduced-motion:reduce){.ambient-field i{animation:none;will-change:auto}}
+
+:root[data-theme=dark] body{background:#000}

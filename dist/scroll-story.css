@@ -1,0 +1,4 @@
+/* Motion only: original layout, sizing, spacing and card styles remain authoritative. */
+.story-controlled{backface-visibility:hidden}
+@media(prefers-reduced-motion:reduce){.story-controlled{transform:none!important;opacity:1!important;clip-path:none!important}}
+.motion-off .story-controlled{transform:none!important;opacity:1!important;clip-path:none!important}
