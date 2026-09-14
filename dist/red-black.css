@@ -115,3 +115,12 @@ dialog[open] button,dialog[open] .close{cursor:pointer!important}
 :root[data-theme] .deck-card,:root[data-theme] .hero-scene .photo-window{border:0;box-shadow:12px 35px 65px #0006}
 :root[data-theme] .deck-chrome,:root[data-theme] .window-chrome{border-bottom:0}
 .theme-toggle{display:none!important}
+/* Local character response: neighboring letters retain their normal appearance. */
+.cursor-letter{position:relative;left:0;top:0;transition:left .28s cubic-bezier(.2,.8,.3,1),top .28s cubic-bezier(.2,.8,.3,1),text-shadow .24s ease;}
+@media(hover:hover) and (pointer:fine){
+  .cursor-letter.letter-hit{animation:letter-shiver .32s ease-in-out infinite;text-shadow:0 0 2px #fff5ee,0 0 7px #ff8a8a,0 0 17px #ff252de6;z-index:1;}
+}
+@media(prefers-reduced-motion:reduce){.cursor-letter.letter-hit{left:0;top:0;text-shadow:inherit;transition:none;animation:none}}
+.motion-off .cursor-letter.letter-hit{left:0;top:0;text-shadow:inherit;animation:none}
+
+@keyframes letter-shiver{0%,100%{left:0;top:0}18%{left:-3px;top:1px}36%{left:3px;top:-2px}54%{left:-2.5px;top:-1px}72%{left:2px;top:1.5px}88%{left:-1px;top:-.5px}}
