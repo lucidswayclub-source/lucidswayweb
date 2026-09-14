@@ -24,7 +24,7 @@
     const dt=clamp((now-lastTime)/16.67,.25,3);lastTime=now;
     const current=scrollY,delta=current-lastY;lastY=current;velocity+=(delta-velocity)*.22;energy+=(Math.abs(velocity)-energy)*.12;
     const allowed=enabled(),mobile=w<701;
-    if(!allowed){words.forEach(el=>el.style.transform='none');cursor.style.opacity=0;ctx.clearRect(0,0,w,h);document.body.classList.remove('spatial-pointer');return}
+    if(!allowed){words.forEach(el=>{el.style.transform='none';el.style.opacity='1';el.style.clipPath='none'});cursor.style.opacity=0;ctx.clearRect(0,0,w,h);document.body.classList.remove('spatial-pointer');return}
     const alpha=1-Math.pow(.79,dt);cx+=(x-cx)*alpha;cy+=(y-cy)*alpha;
     const dx=x-cx,dy=y-cy,stretch=clamp(Math.hypot(dx,dy)/160,0,.42);
     document.body.classList.toggle('spatial-pointer',fine.matches&&inside);
@@ -32,8 +32,8 @@
     cursor.style.transform=`translate3d(${cx}px,${cy}px,0) rotate(${Math.atan2(dy,dx)}rad) scale(${1+stretch},${1-stretch*.35})`;
     for(const item of items){
       if(item.top>current+h*1.3||item.top+item.height<current-h*.2)continue;
-      const entrance=clamp((item.top-current-h*.64)/(h*.42),0,1);
-      item.words.forEach((el,i)=>{const sign=i%2?1:-1,spread=entrance*entrance;el.style.transform=`translate3d(${sign*spread*(mobile?40:260)}px,${spread*(i%3-1)*(mobile?20:90)}px,0) rotate(${sign*spread*24+clamp(velocity*.045,-2,2)}deg) scale(${1+spread*.2},${1-spread*.18})`});
+      const entrance=clamp((item.top-current-h*.73)/(h*.25),0,1);
+      item.words.forEach((el,i)=>{const phase=clamp(entrance*(1+Math.min(i,8)*.065),0,1);el.style.transform=`translate3d(0,${phase*105}%,0) rotateX(${phase*35}deg)`;el.style.opacity=String(1-phase);el.style.clipPath=`inset(0 0 ${phase*100}% 0)`});
     }
     ctx.clearRect(0,0,w,h);
     // Three independent filaments bend toward the pointer and respond to scroll momentum.

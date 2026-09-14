@@ -1,0 +1,76 @@
+/* One brand palette across both display modes and every route. */
+:root,:root[data-theme=dark]{--brand-red:#c71920;--ink:#fff4e9;--lime:var(--brand-red);--glass-fill:#090909d9;--glass-edge:#ffffff26;--glass-muted:#d0c8c5;--glass-selected:#c7192040;--glass-glow:#ffffff0c;color:#fff4e9;background:#000;color-scheme:dark}
+:root body,:root[data-theme=dark] body{background:#000;color:var(--ink)}
+:root[data-theme] .ambient-field{background:#000}:root[data-theme] .ambient-field i{opacity:1}:root[data-theme] .ambient-field::after{background:radial-gradient(ellipse,transparent,#0008)}
+:root[data-theme] .menubar,:root[data-theme] .dock,:root[data-theme] .city-select,:root[data-theme] .next-album,:root[data-theme] .floating-note{background:var(--glass-fill);border-color:var(--glass-edge);color:var(--ink)}
+:root[data-theme] .about-section{background:linear-gradient(115deg,#c7192035,#080808e8);border-color:var(--glass-edge)}
+:root[data-theme] .about-section:before{background:radial-gradient(ellipse at 90% 75%,#c7192030,transparent 50%)}
+:root[data-theme] .about-section:after{border-color:#c7192040;box-shadow:0 0 0 40px #c7192008,0 0 0 80px #c7192006}
+:root[data-theme] .button.dark,:root[data-theme] .sticker,:root[data-theme] .people-icon,:root[data-theme] .motion-icon,:root[data-theme] .close,:root[data-theme] .dock-icon small{background:var(--brand-red);color:#fff4e9}
+:root[data-theme] .button.dark:hover{background:#e51e26;box-shadow:0 12px 32px #c7192045}
+:root[data-theme] .deck-card,:root[data-theme] .photo-window,:root[data-theme] .folder-sheet,:root[data-theme] .scattered-photo,:root[data-theme] .memory-print,:root dialog{background:#0a0a0a;border-color:#ffffff30;color:#fff4e9}
+:root[data-theme] .event-art{background:#c71920;color:#fff4e9}:root[data-theme] .event-art.blue{background:#0a0a0a;border:1px solid #c71920}:root[data-theme] .event-art.coral{background:linear-gradient(145deg,#c71920,#080808);color:#fff4e9}
+:root[data-theme] .calendar-icon,:root[data-theme] .gallery-icon{background:#171717;color:#fff4e9;border:1px solid #c7192055}
+:root[data-theme] .desktop-heading p,:root[data-theme] .event-card p,:root[data-theme] .event-meta,:root[data-theme] .folder-caption p,:root[data-theme] .album-heading p,:root[data-theme] .about-section p,:root[data-theme] .prototype-note,:root[data-theme] .location-line,:root[data-theme] .archive-label,:root footer>span,:root footer small{color:#d0c8c5}
+:root[data-theme] .eyebrow,:root[data-theme] .section-divider,:root[data-theme] .form-note,:root[data-theme] .window-chrome,:root[data-theme] .window-bottom{color:#c7bfbc}
+:root h1 .spark,:root[data-theme] .handwritten,:root[data-theme] .album-heading h1,:root[data-theme] .album-quote em,:root[data-theme] .album-quote>span,:root[data-theme] .scrapbook-stamp{color:var(--brand-red)}
+:root[data-theme] .booking-form input,:root[data-theme] .booking-form select,:root option{background:#0a0a0a;color:#fff4e9;border-color:#ffffff40}
+:root[data-theme] .circle-arrow,:root[data-theme] .back-link,:root[data-theme] .album-scroll,:root[data-theme] .total,:root[data-theme] .card-bottom,:root[data-theme] .section-divider{border-color:#ffffff30}
+:root[data-theme] .memory-folder:hover .circle-arrow,:root[data-theme] .back-link:hover{background:var(--brand-red)}
+:root[data-theme] .logo-crop img,:root[data-theme] .dock-logo{filter:drop-shadow(0 0 10px #fa544550) brightness(1.4)}
+/* The alternate toggle keeps the same palette, with a stronger red atmosphere. */
+:root:not([data-theme=dark]){--glass-fill:#100303ed;--glass-selected:#c7192070}
+:root:not([data-theme=dark]) .ambient-field i{opacity:1;filter:brightness(1.4)}
+.story-interlude{width:var(--screen-width,100vw);max-width:none;margin:80px calc((100% - var(--screen-width,100vw))/2);min-height:100svh;border:0;border-radius:0;padding:100px 0 85px;background:var(--brand-red);box-sizing:border-box}
+.story-message{padding:35px 20px}.story-message h2{font-size:clamp(56px,8.8vw,144px)}
+.story-marquee{font-size:clamp(34px,5vw,80px)}
+@media(max-width:700px){.story-interlude{min-height:100svh;margin-top:45px;margin-bottom:55px;padding:85px 0}.story-message h2{font-size:clamp(44px,11vw,76px)}}
+.motion-reveal{backface-visibility:hidden;transform-origin:50% 100%}
+.menubar{transition:transform .65s cubic-bezier(.22,1,.36,1),background .35s,box-shadow .35s}
+.menubar.is-scrolled{transform:translateY(-5px) scale(.985)}
+@media(prefers-reduced-motion:reduce){.motion-reveal{translate:none!important;rotate:none!important;scale:none!important;opacity:1!important;clip-path:none!important}.menubar.is-scrolled{transform:none}}
+.motion-off .motion-reveal{translate:none!important;rotate:none!important;scale:none!important;opacity:1!important;clip-path:none!important}.motion-off .menubar.is-scrolled{transform:none}
+
+:root[data-theme] .booking-intro h1 em{color:var(--brand-red)}:root[data-theme] .form-heading p{color:#d0c8c5}:root[data-theme] .booking-link:hover{background:var(--brand-red);color:#fff4e9}
+
+/* Bright live red atmosphere, with a dark reading area. */
+:root[data-theme] .ambient-field{background:#170203}
+:root[data-theme] .ambient-field i{background:radial-gradient(ellipse,transparent 23%,#ff242bcc 43%,#c7192088 55%,transparent 72%);filter:blur(38px);animation-duration:14s}
+:root[data-theme] .ambient-field i:nth-child(2){background:radial-gradient(ellipse,transparent 20%,#f51e27bb 42%,#e7192055 60%,transparent 75%);animation-duration:19s}
+:root[data-theme] .ambient-field i:nth-child(3){background:radial-gradient(ellipse,#ed1828bb,transparent 65%);animation-duration:17s}
+:root[data-theme] .ambient-field::after{background:radial-gradient(ellipse at 40% 40%,#000c 0%,#0007 38%,transparent 85%)}
+:root[data-theme] .desktop-heading h1,:root[data-theme] .section-top h2,:root[data-theme] .about-section h2,:root[data-theme] .folder-caption h3,:root[data-theme] .event-card h3,:root[data-theme] .booking-intro h1,:root[data-theme] .frames-heading h2{color:#ff555b}
+:root[data-theme] .menubar,:root[data-theme] .dock,:root[data-theme] .city-select,:root[data-theme] .booking-form,:root[data-theme] .next-album{border-color:#f52b3566;box-shadow:0 12px 35px #0005,inset 0 1px 0 #ff555b22}
+:root[data-theme] .menubar nav a,:root[data-theme] .city-select select{color:#ff999d}
+/* Photo windows retain neutral macOS chrome and their full-color photos. */
+:root[data-theme] .deck-card,:root[data-theme] .hero-scene .photo-window{background:#292a2e;color:#ececee;border:1px solid #ffffff55;box-shadow:0 28px 55px #0009,inset 0 1px 0 #ffffff40}
+:root[data-theme] .deck-chrome,:root[data-theme] .window-chrome{background:linear-gradient(#3b3c41,#292a2e);color:#dedee3}
+:root[data-theme] .deck-foot,:root[data-theme] .window-bottom{background:#27282c;color:#c1c2c9}
+.deck-lights{display:flex;gap:5px;font-size:0}.deck-lights i{display:block;width:8px;height:8px;border-radius:50%;background:#ff5f57;box-shadow:inset 0 0 0 1px #0002}.deck-lights i:nth-child(2){background:#febc2e}.deck-lights i:nth-child(3){background:#28c840}
+:root[data-theme] .deck-caption strong,:root[data-theme] .deck-caption small,:root[data-theme] .story-message h2{color:#fff4e9}
+@media(max-width:700px){:root[data-theme] .ambient-field i{filter:blur(24px)}}
+/* White headline, brand-red changing word. */
+:root[data-theme] .desktop-heading h1{color:#fff}
+:root[data-theme] .desktop-heading .living-word{color:#ff252d;text-shadow:0 0 22px #fa544550}
+:root[data-theme] h1 .spark{color:#ff252d}
+/* Reference proportions: wide cinematic banner rather than a tall screen. */
+.story-interlude{min-height:0;aspect-ratio:3420/1198;padding:clamp(22px,3vw,60px) 0;gap:14px}
+.story-message{padding:0 20px}.story-message h2{font-size:clamp(44px,6vw,104px)}
+.story-message p{margin:0 0 5px}.story-star{font-size:24px;margin:0 0 8px}.story-message a{margin-top:14px}
+.story-marquee{font-size:clamp(28px,3.7vw,64px)}
+.scroll-tethers{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;overflow:hidden}
+.scroll-tethers path{fill:none;stroke:#ff252d;stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 0 5px #ff252d99)}
+.event-grid,.memory-folders,.album-frames{perspective:1100px}
+.motion-reveal{transform-origin:50% 70%;backface-visibility:hidden}
+:root[data-theme] .deck-chrome{background:linear-gradient(110deg,#202124 0%,#45464a 40%,#292a2e 65%,#1b1c1e);border-bottom:1px solid #ffffff30}
+:root[data-theme] .button.dark{box-shadow:0 0 20px #ff252d35,inset 0 1px 0 #ffffff40}
+:root[data-theme] .button.dark:hover{box-shadow:0 0 32px #ff252d77,inset 0 1px 0 #ffffff70}
+:root[data-theme] .deck-lights i:nth-child(2){background:#fff}:root[data-theme] .deck-lights i:nth-child(3){background:#111;border:1px solid #ffffff60}
+:root[data-theme] .menubar nav a,:root[data-theme] .city-select select{color:#fff}
+:root[data-theme] .desktop-heading p,:root[data-theme] .event-card p,:root[data-theme] .about-section p,:root[data-theme] .folder-caption p,:root[data-theme] .event-meta{color:#fff}
+@media(max-width:700px){.story-interlude{aspect-ratio:auto;min-height:340px;padding:25px 0}.story-message h2{font-size:clamp(42px,10vw,68px)}.story-message a{margin-top:10px}.scroll-tethers path{stroke-width:3}}
+@media(prefers-reduced-motion:reduce){.scroll-tethers{display:none}}
+.motion-off .scroll-tethers{display:none}
+:root[data-theme] .event-art:before{background:repeating-radial-gradient(ellipse at 65% 80%,transparent 0 13px,#ffffff30 14px 15px,transparent 16px 24px)}
+:root[data-theme] .event-art.coral:before{background:repeating-linear-gradient(125deg,transparent 0 19px,#ffffff60 20px 22px,transparent 23px 40px)}
+:root[data-theme] .event-art.blue:before{background:repeating-radial-gradient(circle at 15% 25%,transparent 0 15px,#ffffff60 16px 18px,transparent 19px 30px)}
