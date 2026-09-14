@@ -13,9 +13,9 @@
  function render(){frame=0;const off=reduced.matches||document.body.classList.contains('motion-off');const h=innerHeight,w=innerWidth;svg.setAttribute('viewBox',`0 0 ${w} ${h}`);svg.style.opacity=off?'0':'1';
    items.forEach(({el,top,height,card,path,i})=>{
     const focus=el.contains(document.activeElement);const enter=off||focus?0:clamp((top-scrollY-h*.72)/(h*.35));const exit=off||focus?0:clamp((scrollY-top-height*.2)/(h*.65));const sign=i%2?1:-1;
-    const rise=enter*enter;el.style.translate=`${rise*(card?sign*Math.min(100,w*.08):path?-110:0)}px ${rise*(card?115:65)-exit*exit*(card?100:15)}px`;
-    el.style.rotate=`${card?'1 0.2 0':'1 0 0'} ${card?rise*38-exit*62:rise*16}deg`;el.style.scale=String(card?1-rise*.13-exit*.12:1);el.style.opacity=String(1-rise*.92);
-    if(path){const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;const progress=1-enter;path.setAttribute('d',`M -60 ${y+170} C ${w*.2} ${y+220}, ${x-210} ${y-135}, ${x} ${y}`);path.style.strokeDasharray='1';path.style.strokeDashoffset=String(1-progress);path.style.opacity=String(!off&&y>-100&&y<h+100?Math.sin(progress*Math.PI)*.8:0)}
+    const rise=enter*enter;el.style.translate=`${rise*(card?sign*Math.min(150,w*.13):path?-210:0)}px ${rise*(card?150:95)-exit*exit*(card?180:65)}px`;
+    el.style.rotate=`${card?'1 0.2 0':'1 0 0'} ${card?rise*58-exit*105:rise*48-exit*35}deg`;el.style.scale=String(card?1-rise*.13-exit*.12:1);el.style.opacity=String(1-rise*.92);
+    if(path){const r=el.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;const progress=1-enter;path.setAttribute('d',`M -60 ${y+170} C ${w*.35} ${y+380}, ${x-310} ${y-290}, ${x} ${y}`);path.style.strokeDasharray='1';path.style.strokeDashoffset=String(1-progress);path.style.opacity=String(!off&&y>-100&&y<h+100?Math.sin(progress*Math.PI)*.8:0)}
    });
  }
  function schedule(){if(!frame)frame=requestAnimationFrame(render)}

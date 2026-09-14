@@ -74,3 +74,44 @@
 :root[data-theme] .event-art:before{background:repeating-radial-gradient(ellipse at 65% 80%,transparent 0 13px,#ffffff30 14px 15px,transparent 16px 24px)}
 :root[data-theme] .event-art.coral:before{background:repeating-linear-gradient(125deg,transparent 0 19px,#ffffff60 20px 22px,transparent 23px 40px)}
 :root[data-theme] .event-art.blue:before{background:repeating-radial-gradient(circle at 15% 25%,transparent 0 15px,#ffffff60 16px 18px,transparent 19px 30px)}
+/* Original light Mac window chrome. */
+:root[data-theme] .deck-card,:root[data-theme] .hero-scene .photo-window{background:#f4f5ec;color:#343434;border:1px solid #fff;border-radius:13px;box-shadow:12px 35px 65px #0006,0 2px 0 #fff}
+:root[data-theme] .deck-chrome,:root[data-theme] .window-chrome{background:linear-gradient(180deg,#fafbf5,#e7e8e1);color:#64645f;border-bottom:1px solid #0001;padding:10px 13px}
+:root[data-theme] .deck-foot,:root[data-theme] .window-bottom{background:#f4f5ec;color:#64645f}
+:root[data-theme] .deck-lights i:nth-child(1){background:#ff6058}:root[data-theme] .deck-lights i:nth-child(2){background:#febc2e}:root[data-theme] .deck-lights i:nth-child(3){background:#28c840;border:0}
+.deck-caption strong{font-size:clamp(28px,3.5vw,48px)}.deck-caption small{margin-top:10px;line-height:1.5}
+.folder-caption h3{font-size:clamp(23px,2.4vw,34px);line-height:1.15}
+:root[data-theme] .event-credit{font-size:12px;line-height:1.6;margin-top:5px;color:#fff}
+.album-heading h1{font-size:clamp(40px,5vw,76px);letter-spacing:-2px;overflow-wrap:normal}
+@media(max-width:700px){.album-heading h1{font-size:clamp(38px,10vw,60px)}.deck-caption strong{font-size:34px}}
+:root[data-theme] .deck-card,:root[data-theme] .hero-scene .photo-window{background:#23090d;border-color:#b6545966;color:#fff}
+:root[data-theme] .deck-chrome,:root[data-theme] .window-chrome{background:linear-gradient(115deg,#4b111b,#22080c 60%,#5a131c);color:#fff;border-bottom:1px solid #ff77772b}
+:root[data-theme] .deck-foot,:root[data-theme] .window-bottom{background:linear-gradient(110deg,#2b090f,#45101a);color:#fff}
+.spatial-cursor.is-image{width:28px;height:28px;margin:-14px;background:transparent;border-color:#fff8}
+body:has(dialog[open]) .spatial-cursor{display:none}
+body:has(dialog[open]),body:has(dialog[open]) a,body:has(dialog[open]) button{cursor:auto!important}
+dialog[open] button,dialog[open] .close{cursor:pointer!important}
+:root[data-theme] .deck-card:hover,:root[data-theme] .memory-print:hover,:root[data-theme] .scattered-photo:hover{box-shadow:0 0 25px #ff252d55,0 15px 40px #0006}
+:root[data-theme] .theme-toggle:hover,:root[data-theme] .city-select:hover,:root[data-theme] .dock-icon:hover,:root[data-theme] .deck-controls button:hover{box-shadow:0 0 18px #ff303866;border-color:#ff6970}
+.memory-folder:hover .folder-sheet{box-shadow:0 0 24px #ff252d44}
+.water-shine{position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none}
+@media(prefers-reduced-motion:reduce){.water-shine{display:none}}
+
+/* More breathing room around mobile controls; preserve comfortable tap areas. */
+@media(max-width:700px){
+  :root[data-theme] .dock{gap:6px;padding:7px 8px;max-width:calc(100vw - 32px);border-radius:16px;bottom:max(12px,env(safe-area-inset-bottom))}
+  .dock .dock-icon{width:44px;height:44px;border-radius:11px;font-size:25px;flex-shrink:0}
+  .dock .dock-separator{height:30px;margin:0 1px}
+  .dock .dock-logo{max-width:38px;max-height:38px;object-fit:contain}
+  .menubar .theme-toggle{padding:6px 9px;min-height:44px;font-size:11px}
+  .menubar .theme-label{font-size:11px}
+  .city-select{padding:7px 10px;min-height:44px;max-width:100%;box-sizing:border-box}
+  .city-select select{font-size:12px;max-width:130px}
+  .button{padding:13px 17px;gap:23px;font-size:13px;min-height:44px;box-sizing:border-box}
+  .deck-controls{font-size:11px;gap:8px}.deck-controls button{width:44px;height:44px}
+}
+@media(max-width:360px){.dock .dock-icon{width:40px;height:44px}.dock{gap:4px!important}}
+/* No contrasting seam around the macOS photo windows. */
+:root[data-theme] .deck-card,:root[data-theme] .hero-scene .photo-window{border:0;box-shadow:12px 35px 65px #0006}
+:root[data-theme] .deck-chrome,:root[data-theme] .window-chrome{border-bottom:0}
+.theme-toggle{display:none!important}

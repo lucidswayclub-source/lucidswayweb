@@ -27,13 +27,14 @@
     if(!allowed){words.forEach(el=>{el.style.transform='none';el.style.opacity='1';el.style.clipPath='none'});cursor.style.opacity=0;ctx.clearRect(0,0,w,h);document.body.classList.remove('spatial-pointer');return}
     const alpha=1-Math.pow(.79,dt);cx+=(x-cx)*alpha;cy+=(y-cy)*alpha;
     const dx=x-cx,dy=y-cy,stretch=clamp(Math.hypot(dx,dy)/160,0,.42);
-    document.body.classList.toggle('spatial-pointer',fine.matches&&inside);
-    cursor.style.opacity=fine.matches&&inside?'1':'0';
+    const dialogOpen=!!document.querySelector('dialog[open]');
+    document.body.classList.toggle('spatial-pointer',fine.matches&&inside&&!dialogOpen);
+    cursor.style.opacity=fine.matches&&inside&&!dialogOpen?'1':'0';
     cursor.style.transform=`translate3d(${cx}px,${cy}px,0) rotate(${Math.atan2(dy,dx)}rad) scale(${1+stretch},${1-stretch*.35})`;
     for(const item of items){
       if(item.top>current+h*1.3||item.top+item.height<current-h*.2)continue;
-      const entrance=clamp((item.top-current-h*.73)/(h*.25),0,1);
-      item.words.forEach((el,i)=>{const phase=clamp(entrance*(1+Math.min(i,8)*.065),0,1);el.style.transform=`translate3d(0,${phase*105}%,0) rotateX(${phase*35}deg)`;el.style.opacity=String(1-phase);el.style.clipPath=`inset(0 0 ${phase*100}% 0)`});
+      const entrance=clamp((item.top-current-h*.72)/(h*.3),0,1);
+      item.words.forEach((el,i)=>{const phase=clamp(entrance*(1+Math.min(i,8)*.035),0,1);el.style.transform=`translate3d(${phase*35}px,${phase*22}px,0)`;el.style.opacity=String(1-phase);el.style.clipPath=`inset(0 ${phase*100}% 0 0)`});
     }
     ctx.clearRect(0,0,w,h);
     // Three independent filaments bend toward the pointer and respond to scroll momentum.
@@ -48,7 +49,7 @@
   function wake(){if(!frame){lastTime=performance.now();frame=requestAnimationFrame(tick)}}
   addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;x=e.clientX;y=e.clientY;inside=true;wake()},{passive:true});
   document.addEventListener('pointerleave',()=>{inside=false;wake()});
-  document.addEventListener('pointerover',e=>{const target=e.target.closest(interactive);active=target;cursor.classList.toggle('is-action',!!target);cursor.classList.toggle('is-image',!!e.target.closest('.memory-folder,[data-photo],.hero-photo'));cursor.textContent=e.target.closest('.memory-folder,[data-photo]')?'VIEW':target?'↗':''});
+  document.addEventListener('pointerover',e=>{const target=e.target.closest(interactive);active=target;cursor.classList.toggle('is-action',!!target);cursor.classList.toggle('is-image',!!e.target.closest('.memory-folder,[data-photo],.hero-photo'));cursor.textContent=''});
   addEventListener('scroll',wake,{passive:true});addEventListener('resize',measure,{passive:true});
   reduced.addEventListener('change',measure);document.querySelector('#motion-toggle')?.addEventListener('click',()=>requestAnimationFrame(measure));
   document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0}else wake()});

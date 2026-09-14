@@ -1,115 +1,101 @@
 (() => {
   const intro = document.querySelector('.logo-intro');
   if (!intro) return;
-  const ambientCanvas = intro.querySelector('.logo-intro__canvas');
-  const dustCanvas = intro.querySelector('.logo-intro__dust');
-  const ambient = ambientCanvas.getContext('2d');
-  const dust = dustCanvas.getContext('2d');
-  const core = intro.querySelector('.logo-intro__core');
-  let width = 0, height = 0, coreWidth = 0, coreHeight = 0, frame = 0;
-  let started = performance.now(), leaving = false, logoDust = [];
-
-  const atmosphere = Array.from({ length: 76 }, (_, i) => ({
-    angle: (i / 76) * Math.PI * 2 + Math.random() * .18,
-    radius: .08 + Math.random() * .52,
-    speed: .12 + Math.random() * .28,
-    size: .5 + Math.random() * 2.2,
-    depth: Math.random(),
-  }));
-
-  const buildLogoDust = () => {
-    const image = new Image();
-    image.src = '/assets/lucids-way-logo.png';
-    image.onload = () => {
-      const sampleWidth = 250;
-      const sampleHeight = Math.round(sampleWidth * image.naturalHeight / image.naturalWidth);
-      const source = document.createElement('canvas');
-      source.width = sampleWidth;
-      source.height = sampleHeight;
-      const sourceContext = source.getContext('2d', { willReadFrequently: true });
-      sourceContext.drawImage(image, 0, 0, sampleWidth, sampleHeight);
-      const pixels = sourceContext.getImageData(0, 0, sampleWidth, sampleHeight).data;
-      logoDust = [];
-      for (let y = 0; y < sampleHeight; y += 3) {
-        for (let x = 0; x < sampleWidth; x += 3) {
-          const index = (y * sampleWidth + x) * 4;
-          if (pixels[index + 3] < 105 || Math.random() > .72) continue;
-          const edge = Math.random() * Math.PI * 2;
-          const distance = 160 + Math.random() * 460;
-          logoDust.push({
-            tx: x / sampleWidth, ty: y / sampleHeight,
-            sx: .5 + Math.cos(edge) * distance / Math.max(width, 1),
-            sy: .5 + Math.sin(edge) * distance / Math.max(height, 1),
-            drift: (Math.random() - .5) * 22,
-            size: .55 + Math.random() * 1.5,
-            delay: Math.random() * .72,
-            red: pixels[index], green: pixels[index + 1], blue: pixels[index + 2],
-          });
-        }
-      }
-    };
-  };
-
-  const resize = () => {
-    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+  const root = document.documentElement;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const isReload = performance.getEntriesByType('navigation')[0]?.type === 'reload';
+  let seen = !isReload && root.classList.contains('intro-seen');
+  try {
+    seen = !isReload && (seen || sessionStorage.getItem('lucids-intro-seen') === '1');
+    sessionStorage.setItem('lucids-intro-seen', '1');
+  } catch {}
+  if (seen || reduced.matches) { intro.remove(); root.classList.remove('intro-active'); return; }
+  const canvas = intro.querySelector('.logo-intro__dust');
+  const ctx = canvas.getContext('2d');
+  const logo = intro.querySelector('.logo-intro__logo');
+  let frame, started, particles = [], width, height, neon, finished = false;
+  const clamp = n => Math.max(0, Math.min(1, n));
+  const ease = n => { n = clamp(n); return n * n * (3 - 2 * n); };
+  // Bake the glow once instead of running a shadow/filter for every particle.
+  const sprite = document.createElement('canvas');
+  sprite.width = sprite.height = 24;
+  const s = sprite.getContext('2d');
+  const glow = s.createRadialGradient(12, 12, 0, 12, 12, 12);
+  glow.addColorStop(0, '#ff9296'); glow.addColorStop(.14, '#ff5960');
+  glow.addColorStop(.32, '#ff252dbb'); glow.addColorStop(1, '#ff252d00');
+  s.fillStyle = glow; s.fillRect(0, 0, 24, 24);
+  function resize() {
     width = innerWidth; height = innerHeight;
-    ambientCanvas.width = width * dpr; ambientCanvas.height = height * dpr;
-    ambientCanvas.style.width = `${width}px`; ambientCanvas.style.height = `${height}px`;
-    ambient.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const bounds = core.getBoundingClientRect();
-    coreWidth = bounds.width; coreHeight = bounds.height;
-    dustCanvas.width = coreWidth * dpr; dustCanvas.height = coreHeight * dpr;
-    dust.setTransform(dpr, 0, 0, dpr, 0, 0);
-  };
-  const ease = value => {
-    const x = Math.max(0, Math.min(1, value));
-    return x * x * x * (x * (x * 6 - 15) + 10);
-  };
-
-  const draw = now => {
-    const t = (now - started) / 1000;
-    ambient.clearRect(0, 0, width, height);
-    const unit = Math.min(width, height);
-    for (const p of atmosphere) {
-      const angle = p.angle + t * p.speed;
-      const expansion = (.18 + p.radius * 1.45) * unit;
-      const x = width / 2 + Math.cos(angle) * expansion;
-      const y = height / 2 + Math.sin(angle) * expansion * (.35 + p.depth * .55);
-      const alpha = Math.max(0, Math.min(.5, (t - p.depth * .7) * .45));
-      ambient.beginPath();
-      ambient.fillStyle = `rgba(255,${46 + p.depth * 62},${54 + p.depth * 48},${alpha})`;
-      ambient.arc(x, y, p.size, 0, Math.PI * 2); ambient.fill();
+    const dpr = Math.min(devicePixelRatio || 1, 1.5);
+    canvas.width = width * dpr; canvas.height = height * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function finish() {
+    if (finished) return;
+    finished = true; cancelAnimationFrame(frame);
+    clearTimeout(fallback); removeEventListener('resize', resize);
+    root.classList.remove('intro-active', 'intro-reveal'); intro.remove();
+  }
+  function draw(now) {
+    if (finished) return;
+    started ??= now;
+    const t = now - started;
+    if (t >= 3200) { finish(); return; }
+    ctx.clearRect(0, 0, width, height);
+    const w = Math.min(560, width * .84), h = w * logo.naturalHeight / logo.naturalWidth;
+    const left = (width - w) / 2, top = (height - h) / 2;
+    const solid = ease((t - 1250) / 300);
+    if (t < 2100) {
+      ctx.globalAlpha = 1 - solid;
+      for (const p of particles) {
+        const progress = ease((t - p.delay) / 1300);
+        const x = left + p.x * w + Math.cos(p.angle) * p.distance * (1 - progress);
+        const y = top + p.y * h + Math.sin(p.angle) * p.distance * (1 - progress);
+        const size = p.size * (1.4 - progress * .4);
+        ctx.drawImage(sprite, x - size / 2, y - size / 2, size, size);
+      }
+      ctx.globalAlpha = solid;
+      ctx.drawImage(neon, left - w * .08, top - h * .08, w * 1.16, h * 1.16);
+    } else {
+      // Hold the formed logo still, then dissolve into the homepage.
+      ctx.globalAlpha = 1 - ease((t - 2730) / 470);
+      ctx.drawImage(neon, left - w * .08, top - h * .08, w * 1.16, h * 1.16);
     }
-    dust.clearRect(0, 0, coreWidth, coreHeight);
-    dust.globalCompositeOperation = 'lighter';
-    for (const p of logoDust) {
-      const progress = ease((t - .45 - p.delay) / 2.55);
-      if (progress <= 0) continue;
-      const targetX = p.tx * coreWidth, targetY = p.ty * coreHeight;
-      const startX = p.sx * coreWidth, startY = p.sy * coreHeight;
-      const curve = Math.sin(progress * Math.PI) * p.drift * (1 - progress * .35);
-      const x = startX + (targetX - startX) * progress + curve;
-      const y = startY + (targetY - startY) * progress - curve * .35;
-      const fade = t > 3.18 ? Math.max(0, 1 - (t - 3.18) / 1.02) : 1;
-      const alpha = Math.min(1, progress * 1.35) * fade;
-      dust.fillStyle = `rgba(${Math.max(205, p.red)},${p.green},${p.blue},${alpha})`;
-      const size = p.size * (.65 + progress * .65);
-      dust.fillRect(x - size / 2, y - size / 2, size, size);
+    ctx.globalAlpha = 1;
+    if (t >= 2730) {
+      root.classList.add('intro-reveal');
+      intro.style.opacity = 1 - ease((t - 2730) / 470);
     }
-    dust.globalCompositeOperation = 'source-over';
-    if (!leaving) frame = requestAnimationFrame(draw);
-  };
-
-  const finish = () => {
-    if (leaving) return;
-    leaving = true; cancelAnimationFrame(frame);
-    intro.classList.add('is-leaving');
-    document.documentElement.classList.remove('intro-active');
-    setTimeout(() => intro.remove(), 1050);
-  };
-  resize(); buildLogoDust(); frame = requestAnimationFrame(draw);
-  addEventListener('resize', resize, { passive: true });
+    frame = requestAnimationFrame(draw);
+  }
+  function start() {
+    if (finished || started !== undefined || frame) return;
+    // Cache the neon halo once; the animation only moves this bitmap.
+    neon = document.createElement('canvas');
+    const nw = 640, nh = Math.round(nw * logo.naturalHeight / logo.naturalWidth);
+    neon.width = Math.ceil(nw * 1.16); neon.height = Math.ceil(nh * 1.16);
+    const nc = neon.getContext('2d');
+    nc.shadowColor = '#ff252d80'; nc.shadowBlur = 14;
+    nc.drawImage(logo, nw * .08, nh * .08, nw, nh);
+    nc.shadowBlur = 4; nc.filter = 'brightness(1.08)';
+    nc.drawImage(logo, nw * .08, nh * .08, nw, nh);
+    const sample = document.createElement('canvas');
+    sample.width = 160; sample.height = Math.round(160 * logo.naturalHeight / logo.naturalWidth);
+    const c = sample.getContext('2d', { willReadFrequently: true });
+    c.drawImage(logo, 0, 0, sample.width, sample.height);
+    const pixels = c.getImageData(0, 0, sample.width, sample.height).data;
+    for (let y = 0; y < sample.height; y += 3) for (let x = 0; x < sample.width; x += 3) {
+      if (pixels[(y * sample.width + x) * 4 + 3] < 100) continue;
+      particles.push({ x: x / sample.width, y: y / sample.height,
+        angle: Math.random() * Math.PI * 2, distance: 90 + Math.random() * Math.min(width, height) * .55,
+        delay: Math.random() * 100, size: 6 + Math.random() * 5 });
+    }
+    frame = requestAnimationFrame(draw);
+  }
+  resize(); addEventListener('resize', resize, { passive: true });
   intro.addEventListener('click', finish);
-  intro.addEventListener('keydown', event => { if (['Escape', 'Enter', ' '].includes(event.key)) finish(); });
-  setTimeout(finish, 5850);
+  intro.addEventListener('keydown', e => { if (['Escape', 'Enter', ' '].includes(e.key)) { e.preventDefault(); finish(); } });
+  const fallback = setTimeout(finish, 5500);
+  logo.addEventListener('error', finish, { once: true });
+  if (logo.complete && logo.naturalWidth) start(); else logo.addEventListener('load', start, { once: true });
 })();

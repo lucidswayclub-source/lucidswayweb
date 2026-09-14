@@ -31,3 +31,4 @@
 @media(max-width:700px){.portal-header{top:15px}.portal-header>span{display:none}.portal-header button{font-size:11px;padding:10px 12px}.portal-footer{bottom:18px;justify-content:center;gap:12px}.portal-footer nav{flex-wrap:wrap;justify-content:center}.portal-footer button{padding:9px 11px;font-size:10px}.portal-footer small{display:none}.portal-footer .portal-steering{width:100%;justify-content:center}.memory-portal .portal-photo{width:48vw;height:42vw}.portal-identity h1{font-size:15vw}.is-orbit .portal-identity{transform:translateY(-30vh) scale(.38)}.portal-skip{bottom:145px}.portal-preview header{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.memory-portal *{animation:none!important;transition:none!important}.portal-photo{will-change:auto}}
 .is-diving .portal-atmosphere,.is-diving .portal-ring,.is-diving .portal-stage{opacity:0}
+.memory-portal{overflow:clip}
