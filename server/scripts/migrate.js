@@ -20,5 +20,9 @@ export async function migrate(pool) {
  }finally{try{await c.query("SELECT RELEASE_LOCK('lucidsway_migrations')");}finally{c.release();}}
 }
 if(process.argv[1]===fileURLToPath(import.meta.url)){
- const pool=createPool();try{await migrate(pool);console.log('Database migrations applied.');}finally{await pool.end();}
+ const pool=createPool();
+ migrate(pool)
+  .then(()=>console.log('Database migrations applied.'))
+  .catch(error=>{console.error(error);process.exitCode=1;})
+  .finally(()=>pool.end());
 }
