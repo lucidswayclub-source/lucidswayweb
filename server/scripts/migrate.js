@@ -2,6 +2,13 @@ import {readdir,readFile} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 import {createPool} from '../db.js';
+
+function compatibleDdl(command) {
+ let sql=command.replace(/^CREATE TABLE\s+(?!IF NOT EXISTS)/i,'CREATE TABLE IF NOT EXISTS ');
+ if(/ENGINE=InnoDB$/i.test(sql))sql=sql.replace(/ENGINE=InnoDB$/i,'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci');
+ return sql;
+}
+
 export async function migrate(pool) {
  const c=await pool.connect();
  try {
@@ -14,7 +21,7 @@ export async function migrate(pool) {
    const existing=await c.query('SELECT checksum FROM schema_migrations WHERE name=$1',[name]);
    if(existing.rowCount){if(existing.rows[0].checksum!==hash)throw Error(`Applied migration changed: ${name}`);continue;}
    await c.begin();
-   try {for(const command of sql.split(/;\s*(?:\r?\n|$)/).map(value=>value.trim()).filter(Boolean))await c.query(command);await c.query('INSERT INTO schema_migrations(name,checksum) VALUES($1,$2)',[name,hash]);await c.commit();}
+   try {for(const command of sql.split(/;\s*(?:\r?\n|$)/).map(value=>value.trim()).filter(Boolean))await c.query(compatibleDdl(command));await c.query('INSERT INTO schema_migrations(name,checksum) VALUES($1,$2)',[name,hash]);await c.commit();}
    catch(e){await c.rollback();throw e;}
   }
  }finally{try{await c.query("SELECT RELEASE_LOCK('lucidsway_migrations')");}finally{c.release();}}
