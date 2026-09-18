@@ -44,7 +44,7 @@
     const variant=active.id==='in-the-moment'? (i-2)*140:active.id==='one-more-song'?Math.sin(i*2)*300:0;
     const startX=variant,startY=active.id==='after-hours'?(i-2)*75:0;
     card.style.transform=`translate3d(calc(-50% + ${startX*(1-spread)+x*spread}px),calc(-50% + ${startY*(1-spread)+y*spread}px),${-900*(1-spread)+z*spread}px) rotateY(${-Math.sin(theta)*22*spread}deg) rotateZ(${(1-spread)*(active.id==='one-more-song'?i*35:0)}deg) scale(${.72+depth*.28})`;
-    card.style.zIndex=String(Math.round(depth*100));card.style.opacity=String((.38+depth*.62)*(phase==='dive'?.2:1));card.style.filter=`brightness(${.5+depth*.5}) blur(${quiet()?0:Math.min(Math.abs(velocity)*11,2)*(1-depth*.6)}px)`;
+    const layer=String(Math.round(depth*100));if(card.style.zIndex!==layer)card.style.zIndex=layer;card.style.opacity=String((.38+depth*.62)*(phase==='dive'?.2:1));const filter=`brightness(${(.5+depth*.5).toFixed(2)}) blur(${(quiet()?0:Math.min(Math.abs(velocity)*11,2)*(1-depth*.6)).toFixed(1)}px)`;if(card.style.filter!==filter)card.style.filter=filter;
    });
   }raf=requestAnimationFrame(tick);
  }

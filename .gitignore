@@ -6,3 +6,9 @@ node_modules/
 !.env.example
 tmp/
 .sites-runtime/
+.local/
+coverage/
+*.log
+.local/
+.env
+dist/uploads/

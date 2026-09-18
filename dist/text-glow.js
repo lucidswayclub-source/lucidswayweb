@@ -47,7 +47,7 @@
     if (!fine.matches) return;
     for (const record of records) {
       const parent = record.target.nodeType === 1 ? record.target : record.target.parentElement;
-      if (parent && !parent.closest(excluded)) pending.add(parent);
+      if (record.type==='characterData') { if(parent&&!parent.closest(excluded)) pending.add(parent); } else record.addedNodes.forEach(node=>{if(node.nodeType===1&&!node.closest(excluded)) pending.add(node);else if(node.nodeType===3&&parent&&!parent.closest(excluded)) pending.add(parent);});
 
     }
     if (pending.size && !frame) frame = requestAnimationFrame(flush);
@@ -56,9 +56,9 @@
   document.addEventListener('pointermove', e => {
     if (!enabled() || e.pointerType === 'touch') { clear(); return; }
     const letter = e.target.closest('.cursor-letter');
-    if (letter !== active) { clear(); active = letter; }
-    if (!active) return;
-    active.classList.add('letter-hit');
+    if(letter===active)return;
+    clear();active=letter;
+    active?.classList.add('letter-hit');
   }, { passive:true });
   document.addEventListener('pointerleave', clear);
   addEventListener('scroll', clear, { passive:true });
